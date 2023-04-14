@@ -112,13 +112,24 @@
     (insert header tasks-header task-templates "\n* Schedule\n\n* Notes\n")))
 
 
+(defun day-of-week-to-number (day)
+  (pcase day
+    ('sunday 0)
+    ('monday 1)
+    ('tuesday 2)
+    ('wednesday 3)
+    ('thursday 4)
+    ('friday 5)
+    ('saturday 6)))
+
 (defun paper-planner-generate-file ()
   (interactive)
-  (let* ((last-sunday (format-time-string "%Y-%m-%d" (org-read-date nil t "-sun")))
-         (file-name (format (concat paper-planner-directory paper-planner-file-format) last-sunday)))
+  (let* ((starting-day-offset (mod (- (string-to-number (format-time-string "%w")) (day-of-week-to-number paper-planner-starting-day))
+                                     7))
+         (start-date (format-time-string "%Y-%m-%d" (org-read-date nil t (format "-%s" starting-day-offset))))
+         (file-name (expand-file-name (format paper-planner-file-format start-date) paper-planner-directory)))
     (find-file file-name)
     (when (equal (buffer-string) "")
-      (paper-planner-create-template last-sunday paper-planner-my-tasks))))
-
+      (paper-planner-create-template start-date paper-planner-my-tasks))))
 
 (provide 'paper-planner)

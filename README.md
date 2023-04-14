@@ -1,6 +1,16 @@
 # Paper Planner
 
-An Emacs package that replicates a weekly paper planner with habit tracking in org-mode.
+An Emacs package that replicates a (paper) planner format I used to hand write.
+
+## Usage
+The main section is "tasks." Each task has a collection of checkboxes. Their meaning depends on the task. They may, for example, represent completed pomodoros for work or study, or days exercised for exercise. Whatever you want. This is the "work unit" and figuring out what it means on a per-task basis is up to you.
+
+In this system, you set a target number of work units per task per week. And then, as you're moving through the week, you check them off.
+
+<!---
+Here's what a page from one of my old planner looked like:
+-->
+
 
 ## Installation
 
@@ -19,7 +29,7 @@ To install the Paper Planner package using `use-package` with `straight.el`, add
           (work . 40)
           (study . 10)))
   ;; Optional: Set the default directory for your planner files
-  (setq paper-planner-default-directory "~/your/directory/"))
+  (setq paper-planner-directory "~/your/directory/"))
 ```
 
 Replace "your/directory/" with the desired directory path.
@@ -38,6 +48,6 @@ Once you have the package installed and configured, you can use the following in
 
     paper-planner-generate-file: Generates a new file with the planner template.
     paper-planner-mark-task: Mark the next checkbox in the current task (default keybinding: C-c C-x C-c).
-    paper-planner-create-template: Create a planner template with the given start date and tasks (used internally).
+    paper-planner-create-template: Create a planner template with the given start date and tasks (used internally, or if you want to generate the template in an existing file).
 
 The generated planner will include task sections with checkboxes, a schedule section, and a notes section. Use the paper-planner-mark-task function to mark a checkbox as completed.
