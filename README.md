@@ -11,6 +11,9 @@ In this system, you set a target number of work units per task per week. And the
 Here's what a page from one of my old planner looked like:
 -->
 
+Here's what it looks like—very simple!
+
+![screenshot](./screenshot.png)
 
 ## Installation
 
