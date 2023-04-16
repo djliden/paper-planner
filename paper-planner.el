@@ -8,7 +8,7 @@
 
 ;;; Commentary:
 
-;; This package provides a custom planner template based on 
+;; This package provides a custom planner template based on a paper planner I used to hand write.
 ;; See the README for more information.
 
 (defgroup paper-planner nil
@@ -47,7 +47,6 @@
   :group 'paper-planner)
 
 
-
 (defun paper-planner-count-checkboxes ()
   (let ((total 0)
         (completed 0))
@@ -73,9 +72,9 @@
   (save-excursion
     (org-back-to-heading t)
     (let ((task-heading (point)))
-      (while (and (not (org-entry-get (point) "CustomPlanner"))
+      (while (and (not (org-entry-get (point) "paper-planner"))
                   (org-up-heading-safe)))
-      (if (and (org-entry-get (point) "CustomPlanner")
+      (if (and (org-entry-get (point) "paper-planner")
                (not (equal task-heading (point))))
           (progn
             (goto-char task-heading)
@@ -84,9 +83,29 @@
               (replace-match "[X]")
               (paper-planner-update-checkbox-count))
             (widen))
-        (user-error "Not inside a task entry")))))
+        (user-error "Not inside a paper-planner entry")))))
 
 (define-key org-mode-map (kbd "C-c C-x C-c") 'paper-planner-mark-task)
+
+(defun paper-planner-add-task (task-name work-units)
+  "Add a new task with `units` units"
+  (interactive "sTask Name: \nnNumber of Work Units: ")
+  (org-back-to-heading)
+  (let ((task-heading (point)))
+    (while (and (not (org-entry-get (point) "paper-planner"))
+                (org-up-heading-safe)))
+    (if (and (org-entry-get (point) "paper-planner")
+             (not (equal task-heading (point))))
+        (progn
+          (org-end-of-subtree)
+          (insert "\n" (format "** %s [0/%s]\n" task-name work-units))
+          (let* ((checkboxes ""))
+            (dotimes(i work-units)
+              (setq checkboxes (concat checkboxes "[ ]"))
+              (when (= (% (1+ i) 5) 0)
+                (setq checkboxes (concat checkboxes "\n"))))
+            (insert checkboxes "\n")))
+      (user-error "Not inside a paper-planner entry"))))
 
 (defun paper-planner-last-starting-day ()
   (let* ((day-of-week (cdr (assoc paper-planner-starting-day '((sunday . 0) (monday . 1) (tuesday . 2) (wednesday . 3) (thursday . 4) (friday . 5) (saturday . 6)))))
@@ -97,7 +116,7 @@
 (defun paper-planner-create-template (start-date tasks)
   (interactive (list (format-time-string "%Y-%m-%d" (paper-planner-last-starting-day))
                      paper-planner-my-tasks))  (let* ((header (format "#+TITLE: Week of %s\n" start-date))
-         (tasks-header "* Tasks\n:PROPERTIES:\n:CustomPlanner: t\n:END:\n")
+         (tasks-header "* Tasks\n:PROPERTIES:\n:paper-planner: t\n:END:\n")
          (task-templates ""))
     (dolist (task tasks)
       (let* ((task-name (symbol-name (car task)))
