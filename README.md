@@ -13,7 +13,7 @@ Here's what a page from one of my old planner looked like:
 
 Here's what it looks like—very simple!
 
-![screenshot](./screenshot.png)
+![screenshot](./screenshot.png) ![paper planner](./paper_picture.jpg)
 
 ## Installation
 
