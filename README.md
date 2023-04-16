@@ -1,4 +1,4 @@
-# Paper Planner
+# paper-planner.el
 
 An Emacs package that replicates a (paper) planner format I used to hand write.
 
