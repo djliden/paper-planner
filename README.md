@@ -13,7 +13,10 @@ Here's what a page from one of my old planner looked like:
 
 Here's what it looks like—very simple!
 
-![screenshot](./screenshot.png) ![paper planner](./paper_picture.jpg)
+<p float="left">
+  <img src="./screenshot.png" width="300" />
+  <img src="./paper_picture.jpg" width="300" /> 
+</p>
 
 ## Installation
 
