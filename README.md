@@ -15,7 +15,7 @@ Here's what it looks like—very simple!
 
 <p float="left">
   <img src="./screenshot.png" width="300" />
-  <img src="./paper_picture.jpg" width="300" /> 
+  <img src="./paper_picture.jpg" width="400" /> 
 </p>
 
 ## Installation
