@@ -79,9 +79,15 @@
           (progn
             (goto-char task-heading)
             (org-narrow-to-subtree)
-            (when (re-search-forward "\\[ \\]" nil t)
-              (replace-match "[X]")
-              (paper-planner-update-checkbox-count))
+            (if (re-search-forward "\\[ \\]" nil t)
+                (replace-match "[X]")
+              (progn
+                (goto-char (point-max))
+                ;;(skip-chars-backward " \t\n")
+                (when (= (% (- (line-beginning-position) (point-max)) 15) 0)
+                  (insert "\n"))
+                (insert "[X]")))
+            (paper-planner-update-checkbox-count)
             (widen))
         (user-error "Not inside a paper-planner entry")))))
 
