@@ -96,14 +96,17 @@
 (defun paper-planner-add-task (task-name work-units)
   "Add a new task with `units` units"
   (interactive "sTask Name: \nnNumber of Work Units: ")
-  (org-back-to-heading)
-  (let ((task-heading (point)))
+  (save-excursion
+    (goto-char (point-min)) ;; start from the beginning of the buffer
+    ;; move to the next visible heading until "paper-planner"
+    ;; property is found or end of buffer is reached
     (while (and (not (org-entry-get (point) "paper-planner"))
-                (org-up-heading-safe)))
-    (if (and (org-entry-get (point) "paper-planner")
-             (not (equal task-heading (point))))
+                (org-next-visible-heading 1))) 
+    (if (org-entry-get (point) "paper-planner")
         (progn
           (org-end-of-subtree)
+          (re-search-backward "[^[:space:]]") ;; Find the last non-whitespace character
+          (end-of-line) ;; Go to the end of this line
           (insert "\n" (format "** %s [0/%s]\n" task-name work-units))
           (let* ((checkboxes ""))
             (dotimes(i work-units)
