@@ -135,7 +135,8 @@
         (dotimes (i work-units)
           (setq checkboxes (concat checkboxes "[ ]"))
           (when (= (% (1+ i) 5) 0)
-            (setq checkboxes (concat checkboxes "\n"))))
+            (unless (= i work-units)
+              (setq checkboxes (concat checkboxes "\n")))))
         (setq task-templates (concat task-templates task-header checkboxes "\n"))))
     (insert header tasks-header task-templates "\n* Schedule\n\n* Notes\n")))
 
