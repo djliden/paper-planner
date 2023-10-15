@@ -46,6 +46,8 @@
                  (const :tag "Saturday" saturday))
   :group 'paper-planner)
 
+(defvar paper-planner-current-file-path nil
+  "Global variable to hold the path of the most recent paper planner file.")
 
 (defun paper-planner-count-checkboxes ()
   (let ((total 0)
@@ -160,6 +162,24 @@
          (file-name (expand-file-name (format paper-planner-file-format start-date) paper-planner-directory)))
     (find-file file-name)
     (when (equal (buffer-string) "")
-      (paper-planner-create-template start-date paper-planner-my-tasks))))
+      (paper-planner-create-template start-date paper-planner-my-tasks))
+    ;; save the file
+    (save-buffer)
+    ;; set the global most recent file variable
+    (paper-planner-current-file t)))
+
+(defun paper-planner-current-file (&optional set-global)
+  "returns the most recent paper planner file according to date in filename
+If set-global is non-nil, also sets the global variable paper-planner-current-file-path"
+  (interactive "P")
+  (let ((most-recent-file (car (sort (directory-files paper-planner-directory nil "^weekly-planner.*\\.org$")
+                                     (lambda (file1 file2)
+                                       (string< (substring file2 16 26) (substring file1 16 26)))))))
+  (if set-global
+      (setq paper-planner-current-file-path (expand-file-name most-recent-file paper-planner-directory)))
+  (let ((return-path (expand-file-name most-recent-file paper-planner-directory)))
+    (message "The current paper planner file is: %s" return-path)
+    return-path)))
+  
 
 (provide 'paper-planner)
